@@ -56,7 +56,10 @@ dkms.conf
 
 segger/Output
 _build/
+_bin/
 bin/
+arm-gnu-toolchain-*/
+arm-gnu-toolchain-*.tar.xz
 *.emSession
 *.jlink
 .idea/

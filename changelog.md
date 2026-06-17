@@ -1,4 +1,26 @@
-# Adafruit nRF52 Bootloader Changelog
+# WisCore RAK4631 Bootloader Changelog
+
+Fork of [Adafruit nRF52 Bootloader](https://github.com/adafruit/Adafruit_nRF52_Bootloader). See below for upstream history.
+
+## 0.4.3 (WisCore) - 2025.05.28
+
+- OTA DFU resiliency fix: reboot into OTA DFU mode after an unsuccessful flash (GPREGRET `0xA8`)
+- Makefile fixes for newer GCC versions (12+)
+- CI/workflow updates; build only `wiscore_rak4631_board`
+- Removed other board targets; RAK4631-only fork
+- Added Docker-based build instructions (recommended: `xlemonx/arm-gnu-toolchain:12.3.1`)
+- Added Chinese README (`README.zh-CN.md`)
+- Documented Meshtastic OTA update procedure (Meshtastic app + nRF Device Firmware Update + `*-ota.zip`)
+
+## 0.4.3 (WisCore) - 2023.05.20
+
+- Initial WisCore RAK4631 port based on Adafruit bootloader 0.6.2-11
+- Board support: `wiscore_rak4631_board` (nRF52840, S140 6.1.1)
+- UICR REGOUT0 set to 3.3 V
+
+---
+
+# Adafruit nRF52 Bootloader Changelog (upstream)
 
 ## 0.6.2 - 2021.09.10
 
