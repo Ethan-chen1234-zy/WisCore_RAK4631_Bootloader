@@ -18,6 +18,14 @@
 
 > **Windows 提示 `0x800703EE`？** 复制快结束时若弹出「文件所在的卷已被外部更改」，属于 UF2 烧录完成后的正常现象；固件通常已写入，点 **跳过** 即可。详见 [UF2 Windows 复制错误说明](doc/uf2_windows_copy_error.zh-CN.md)。
 
+### 手动拖拽 UF2 升级 Bootloader（已验证）
+
+已验证在 UF2 模式下手动拖拽以下文件可成功升级 Bootloader：
+
+- `update-wiscore_rak4631_board_bootloader-0.4.4_nosd.uf2`
+
+该 `*_nosd.uf2` 仅更新 Bootloader（不包含 SoftDevice 载荷），正常情况下**不会**改动现有 SoftDevice 区域。
+
 ## OTA 固件升级（Meshtastic）
 
 本 Bootloader 使用 **Adafruit Legacy BLE DFU**（不是 Nordic Secure DFU / RUI3）。在 Bootloader 与 Meshtastic 已安装的前提下（首次安装通常用 UF2），蓝牙空中升级需使用 **`*-ota.zip`** 包和 **nRF Device Firmware Update** App。

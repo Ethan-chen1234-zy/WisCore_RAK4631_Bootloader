@@ -2,21 +2,27 @@
 
 Fork of [Adafruit nRF52 Bootloader](https://github.com/adafruit/Adafruit_nRF52_Bootloader). See below for upstream history.
 
+## 0.4.4 (WisCore) - 2026.06.17
+
+- Version-only update for release consistency.
+- No new bootloader features in this release.
+- Functional changes were introduced in earlier 0.4.3 entries (2025.05.28 and 2026.06.16).
+
+## 0.4.3 (WisCore) - 2026.06.16
+
+Documentation and tooling only (bootloader behavior unchanged at that time).
+
+- README: Docker build instructions (`xlemonx/arm-gnu-toolchain:12.3.1`)
+- README.zh-CN.md: Chinese documentation
+- README: Meshtastic BLE OTA procedure (Meshtastic app or `tools/trigger_ble_dfu.py` -> nRF Device Firmware Update + `*-ota.zip`)
+- `tools/trigger_ble_dfu.py`: trigger Adafruit Legacy Buttonless DFU from a PC (same mechanism as the Meshtastic app "firmware update" step; does not transfer the zip)
+
 ## 0.4.3 (WisCore) - 2025.05.28
 
 - OTA DFU resiliency fix: reboot into OTA DFU mode after an unsuccessful flash (GPREGRET `0xA8`)
 - Makefile fixes for newer GCC versions (12+)
 - CI/workflow updates; build only `wiscore_rak4631_board`
 - Removed other board targets; RAK4631-only fork
-
-## 0.4.3 (WisCore) - 2026.06.16
-
-Documentation and tooling only (bootloader binary unchanged; still reports version 0.4.3).
-
-- README: Docker build instructions (`xlemonx/arm-gnu-toolchain:12.3.1`)
-- README.zh-CN.md: Chinese documentation
-- README: Meshtastic BLE OTA procedure (Meshtastic app or `tools/trigger_ble_dfu.py` → nRF Device Firmware Update + `*-ota.zip`)
-- `tools/trigger_ble_dfu.py`: trigger Adafruit Legacy Buttonless DFU from a PC (same mechanism as the Meshtastic app “firmware update” step; does not transfer the zip)
 
 ## 0.4.3 (WisCore) - 2023.05.20
 

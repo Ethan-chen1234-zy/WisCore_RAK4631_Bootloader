@@ -122,7 +122,7 @@ char infoUf2File[128 * 3] =
 	"Model: " UF2_PRODUCT_NAME "\r\n"
 	"Board-ID: " UF2_BOARD_ID "\r\n"
 	"Date: " __DATE__ "\r\n"
-	"Ver: 0.4.3\r\n";
+	"Ver: 0.4.4\r\n";
 
 const char indexFile[] =
     "<!doctype html>\n"

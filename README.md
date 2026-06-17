@@ -18,6 +18,14 @@ There are two options to install the bootloader, the easiest way is with UF2 mod
 
 > **Windows error `0x800703EE`?** If Explorer shows *"The volume for a file has been externally altered"* near the end of the copy, the flash usually already succeeded — click **Skip**. See [UF2 Windows copy error](doc/uf2_windows_copy_error.md).
 
+### Manual UF2 bootloader update (validated)
+
+Manual drag-and-drop update in UF2 mode has been tested and works with:
+
+- `update-wiscore_rak4631_board_bootloader-0.4.4_nosd.uf2`
+
+This `*_nosd.uf2` package updates the bootloader only (no SoftDevice payload). In normal use it does **not** modify the existing SoftDevice region.
+
 ## OTA firmware update (Meshtastic)
 
 This bootloader uses **Adafruit Legacy BLE DFU** (not Nordic Secure DFU / RUI3). After the bootloader and Meshtastic are installed (first flash is usually via UF2), application updates over Bluetooth use a **`*-ota.zip`** package and the **nRF Device Firmware Update** app.
