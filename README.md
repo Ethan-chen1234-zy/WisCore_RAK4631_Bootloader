@@ -16,6 +16,8 @@ There are two options to install the bootloader, the easiest way is with UF2 mod
 2. Copy the UF2 file onto the RAK4631 drive that appears.
 3. The RAK will reboot and you should be running the new bootloader.
 
+> **Windows error `0x800703EE`?** If Explorer shows *"The volume for a file has been externally altered"* near the end of the copy, the flash usually already succeeded — click **Skip**. See [UF2 Windows copy error](doc/uf2_windows_copy_error.md).
+
 ## OTA firmware update (Meshtastic)
 
 This bootloader uses **Adafruit Legacy BLE DFU** (not Nordic Secure DFU / RUI3). After the bootloader and Meshtastic are installed (first flash is usually via UF2), application updates over Bluetooth use a **`*-ota.zip`** package and the **nRF Device Firmware Update** app.
@@ -33,12 +35,34 @@ Do **not** use RUI3 zip files or `.uf2` files for BLE OTA.
 
 ### Procedure (verified)
 
+**Option A — Meshtastic app**
+
 1. **Enter OTA mode** — In the Meshtastic app, start a **firmware update**. The device reboots into the bootloader BLE OTA state.
 2. **Confirm on the board** — Blue and green LEDs blink alternately. The device advertises as **`AdaDFU`** (Legacy DFU).
 3. **Leave Meshtastic** — Fully quit the Meshtastic app so it does not hold the BLE connection.
 4. **Open nRF Device Firmware Update** — Select the `*-ota.zip` file for RAK4631.
 5. **Connect and upgrade** — Scan, connect to **`AdaDFU`**, and start the update. Keep the phone screen on until finished.
 6. **Reboot** — The board restarts into the new Meshtastic firmware when the transfer completes.
+
+**Option B — `tools/trigger_ble_dfu.py` (PC, no Meshtastic app)**
+
+[`tools/trigger_ble_dfu.py`](tools/trigger_ble_dfu.py) replicates the Meshtastic app step that triggers **BLE Buttonless DFU** (Legacy service `0x1530` on RAK4631). It does **not** upload the zip; use nRF Device Firmware Update for that (steps 4–6 above).
+
+```bash
+pip install bleak
+
+# List Meshtastic BLE devices
+python tools/trigger_ble_dfu.py --scan
+
+# Trigger OTA DFU (headless nodes: default PIN 123456)
+python tools/trigger_ble_dfu.py --address AA:BB:CC:DD:EE:FF --forget
+```
+
+Then on your phone: open nRF Device Firmware Update, connect to **`AdaDFU`**, and flash `*-ota.zip`.
+
+On Windows, if you see **Insufficient Authentication (ATT 0x05)**, retry with `--forget` or remove the device in Bluetooth settings and pair again.
+
+This script is **not** the same as USB UF2 entry (`meshtastic --enter-dfu`, `pio upload`, or double-reset UF2).
 
 ### Recommended DFU app settings
 
@@ -57,6 +81,7 @@ If OTA fails and the application is invalid, this bootloader (2025 fix) sets `GP
 |--------|------|---------|
 | First install / USB | UF2 drag-and-drop | `*.uf2` |
 | BLE OTA (Meshtastic) | nRF Device Firmware Update | `*-ota.zip` |
+| Enter BLE OTA (PC) | `tools/trigger_ble_dfu.py` + phone DFU app | `*-ota.zip` |
 | USB serial DFU | `adafruit-nrfutil dfu serial` | bootloader or app `.zip` |
 | RUI3 devices | nRF Connect | Nordic format (not compatible) |
 

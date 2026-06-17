@@ -16,6 +16,8 @@
 2. 将 UF2 文件复制到出现的 U 盘。
 3. 设备自动重启后，即运行新的 Bootloader。
 
+> **Windows 提示 `0x800703EE`？** 复制快结束时若弹出「文件所在的卷已被外部更改」，属于 UF2 烧录完成后的正常现象；固件通常已写入，点 **跳过** 即可。详见 [UF2 Windows 复制错误说明](doc/uf2_windows_copy_error.zh-CN.md)。
+
 ## OTA 固件升级（Meshtastic）
 
 本 Bootloader 使用 **Adafruit Legacy BLE DFU**（不是 Nordic Secure DFU / RUI3）。在 Bootloader 与 Meshtastic 已安装的前提下（首次安装通常用 UF2），蓝牙空中升级需使用 **`*-ota.zip`** 包和 **nRF Device Firmware Update** App。
@@ -33,12 +35,34 @@ BLE OTA **不要**使用 RUI3 的 zip 或 `.uf2` 文件。
 
 ### 操作步骤（已验证）
 
+**方式 A — Meshtastic App**
+
 1. **进入 OTA 模式** — 在 Meshtastic App 中发起 **固件更新**，设备复位后进入 Bootloader 的 BLE OTA 状态。
 2. **确认板卡状态** — 蓝、绿 LED 交替闪烁，表示等待手机连接；蓝牙广播名为 **`AdaDFU`**（Legacy DFU）。
 3. **退出 Meshtastic** — 完全关闭 Meshtastic App，避免占用 BLE 连接。
 4. **打开 nRF Device Firmware Update** — 选择 RAK4631 对应的 `*-ota.zip` 文件。
 5. **连接并升级** — 扫描并连接 **`AdaDFU`**，开始升级；过程中保持手机屏幕常亮，直至完成。
 6. **自动重启** — 传输完成后设备重启，运行新版本 Meshtastic。
+
+**方式 B — `tools/trigger_ble_dfu.py`（电脑触发，无需 Meshtastic App）**
+
+[`tools/trigger_ble_dfu.py`](tools/trigger_ble_dfu.py) 复现 Meshtastic App「进入 OTA」的原理：通过 BLE 写入 **Buttonless DFU**（RAK4631 为 Legacy 服务 `0x1530`）。脚本**不负责**传 zip，传包仍用手机 nRF Device Firmware Update（即方式 A 的第 4–6 步）。
+
+```bash
+pip install bleak
+
+# 扫描 Meshtastic 蓝牙设备
+python tools/trigger_ble_dfu.py --scan
+
+# 触发 OTA DFU（无屏节点默认 PIN 123456）
+python tools/trigger_ble_dfu.py --address AA:BB:CC:DD:EE:FF --forget
+```
+
+随后在手机上：打开 nRF Device Firmware Update，连接 **`AdaDFU`**，刷写 `*-ota.zip`。
+
+Windows 若出现 **Insufficient Authentication (ATT 0x05)**，请加 `--forget` 重试，或在系统蓝牙设置中删除设备后重新配对。
+
+本脚本**不是** USB UF2 进 Bootloader（`meshtastic --enter-dfu`、`pio upload`、双击 RESET 进 UF2 等）。
 
 ### 建议的 DFU App 参数
 
@@ -57,6 +81,7 @@ BLE OTA **不要**使用 RUI3 的 zip 或 `.uf2` 文件。
 |------|------|--------|
 | 首次安装 / USB | UF2 拖放 | `*.uf2` |
 | 蓝牙 OTA（Meshtastic） | nRF Device Firmware Update | `*-ota.zip` |
+| 电脑触发 BLE OTA | `tools/trigger_ble_dfu.py` + 手机 DFU App | `*-ota.zip` |
 | USB 串口 DFU | `adafruit-nrfutil dfu serial` | Bootloader 或应用 `.zip` |
 | RUI3 设备 | nRF Connect | Nordic 格式（不兼容） |
 

@@ -8,9 +8,15 @@ Fork of [Adafruit nRF52 Bootloader](https://github.com/adafruit/Adafruit_nRF52_B
 - Makefile fixes for newer GCC versions (12+)
 - CI/workflow updates; build only `wiscore_rak4631_board`
 - Removed other board targets; RAK4631-only fork
-- Added Docker-based build instructions (recommended: `xlemonx/arm-gnu-toolchain:12.3.1`)
-- Added Chinese README (`README.zh-CN.md`)
-- Documented Meshtastic OTA update procedure (Meshtastic app + nRF Device Firmware Update + `*-ota.zip`)
+
+## 0.4.3 (WisCore) - 2026.06.16
+
+Documentation and tooling only (bootloader binary unchanged; still reports version 0.4.3).
+
+- README: Docker build instructions (`xlemonx/arm-gnu-toolchain:12.3.1`)
+- README.zh-CN.md: Chinese documentation
+- README: Meshtastic BLE OTA procedure (Meshtastic app or `tools/trigger_ble_dfu.py` → nRF Device Firmware Update + `*-ota.zip`)
+- `tools/trigger_ble_dfu.py`: trigger Adafruit Legacy Buttonless DFU from a PC (same mechanism as the Meshtastic app “firmware update” step; does not transfer the zip)
 
 ## 0.4.3 (WisCore) - 2023.05.20
 
